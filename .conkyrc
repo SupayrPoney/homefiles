@@ -1,0 +1,100 @@
+######################
+# - Conky settings - #
+######################
+update_interval 1
+total_run_times 0
+net_avg_samples 1
+cpu_avg_samples 1
+
+imlib_cache_size 0
+double_buffer yes
+no_buffers yes
+
+#####################
+# - Text settings - #
+#####################
+use_xft yes
+xftfont Ubuntu:size=9
+override_utf8_locale yes
+text_buffer_size 2048
+
+#############################
+# - Window specifications - #
+#############################
+own_window_class Conky
+own_window yes
+own_window_type normal
+own_window_transparent yes
+own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
+#own_window_argb_visual yes
+#own_window_argb_value 100
+
+alignment tr
+gap_x 5
+gap_y 180
+minimum_size 370 370
+
+
+default_bar_size 60 8
+
+#########################
+# - Graphics settings - #
+#########################
+draw_shades no
+
+default_color efefef
+default_shade_color 1d1d1d
+color0 ffffff
+color1 ffffff
+color2 ffffff
+
+
+#lua_load ~/.conky/conkybg.lua
+#lua_draw_hook_pre conky_draw_bg
+
+TEXT
+${voffset 16}
+${goto 92}CPU0  Usage: ${font Ubuntu:style=Bold:size=9}${color1}${cpu cpu1}%${font}${color} ${alignr}Temperature: ${color1}${font Ubuntu:style=Bold:size=9}${color1}${execi 30 sensors | grep 'Core 0' | cut -c18-19}°C${color}${font}  
+
+${goto 92}${voffset -14}─────────────────────────────────────${voffset -14}
+
+${goto 92}CPU1  Usage: ${font Ubuntu:style=Bold:size=9}${color1}${cpu cpu2}%${font}${color} ${alignr}Temperature: ${font Ubuntu:style=Bold:size=9}${color1}${execi 30 sensors | grep 'Core 1' | cut -c18-19}°C${color}${font}  
+
+${goto 92}${voffset -14}─────────────────────────────────────${voffset -14}
+
+${goto 92}CPU2  Usage: ${font Ubuntu:style=Bold:size=9}${color1}${cpu cpu2}%${font}${color} ${alignr}Temperature: ${font Ubuntu:style=Bold:size=9}${color1}${execi 30 sensors | grep 'Core 2' | cut -c18-19}°C${color}${font}  
+
+${goto 92}${voffset -14}─────────────────────────────────────${voffset -14}
+
+${goto 92}CPU3  Usage: ${font Ubuntu:style=Bold:size=9}${color1}${cpu cpu2}%${font}${color} ${alignr}Temperature: ${font Ubuntu:style=Bold:size=9}${color1}${execi 30 sensors | grep 'Core 3' | cut -c18-19}°C${color}${font}  
+
+
+${voffset 0}
+${goto 92}RAM:${color1}    ${font Ubuntu:style=Bold:size=9}${memperc}%${font}${color}${font Ubuntu:style=Bold:size=9}${font} Free: ${font Ubuntu:style=Bold:size=9}${color2}${memeasyfree}${color} ${font}${alignr 15}Used: ${font Ubuntu:style=Bold:size=9}${color2}${mem}${color}${font}
+
+${goto 92}${voffset -14}─────────────────────────────────────${voffset -14}
+
+${goto 92}/home:${color1} ${font Ubuntu:style=Bold:size=9}${fs_used_perc /home}%${font}${color} Free: ${color2}${font Ubuntu:style=Bold:size=9}${fs_free /home}${color}${font} ${alignr 15}Used: ${font Ubuntu:style=Bold:size=9}${color2}${fs_used /home}${color}${font}
+
+${goto 92}${voffset -14}─────────────────────────────────────${voffset -14}
+
+${goto 92}/:         ${color1} ${font Ubuntu:style=Bold:size=9}${fs_used_perc /}%${font}${color} Free: ${color2}${font Ubuntu:style=Bold:size=9}${fs_free /}${color}${font}  ${alignr 15}Used: ${font Ubuntu:style=Bold:size=9}${color2}${fs_used /}${color}${font}  
+
+${if_up wlan0}
+${voffset -4}${goto 92}${voffset -6}Upload: ${font Ubuntu:style=Bold:size=9}${color1}${upspeed wlan0}${color}${font} ${goto 230}Total: ${font Ubuntu:style=Bold:size=9}${color2}${totalup wlan0}${color}${font}
+${voffset 4}${goto 92}Signal:   ${font Ubuntu:style=Bold:size=9}${color1}${wireless_link_qual wlan0}%${color}${font} ${alignr 15}
+${voffset 4}${goto 92}Down:   ${font Ubuntu:style=Bold:size=9}${color1}${downspeed wlan0}${color}${font} ${goto 230}Total: ${font Ubuntu:style=Bold:size=9}${color2}${totaldown wlan0}${color}${font}
+
+
+
+# |--wlp2s0
+${else}${if_up wlp2s0}
+${voffset -10}${color0}${font VariShapes Solid:size=14}${font}${color}${goto 92}${voffset 0}Up: ${font Ubuntu:style=Bold:size=9}${color1}${upspeed wlp2s0}${color}${font} ${alignr 15}${color2}${upspeedgraph wlp2s0 8,60 92B6F1 CCDFFF}${color}
+${goto 92}Total: ${color2}${totalup wlp2s0}${color}
+${voffset -2}${color0}${font VariShapes Solid:size=14}${font}${color}${goto 92}${voffset -6}Down: ${font Ubuntu:style=Bold:size=9}${color1}${downspeed wlp2s0}${color}${font} ${alignr 15}${color2}${downspeedgraph wlp2s0 8,60 92B6F1 CCDFFF}${color}
+${goto 92}Total: ${color2}${totaldown wlp2s0}${color}
+${voffset -2}${color0}${font Poky:size=13}${font}${color}${goto 92}${voffset -4}Local IP: ${alignr 15}${color2}${addr wlp2s0}${color}
+${goto 92}Public IP: ${alignr 15}${color2}${execi 30 dig +short myip.opendns.com @resolver1.opendns.com}${color}
+
+
+${image ~/.conky/base.png -p 10,0 -s 370x159}${image ~/.conky/base.png -p 10,146 -s 370x116}${image ~/.conky/base.png -p 10,249 -s 370x116}${image ~/.conky/Task_Manager.png -p 32,53 -s 45x45}${image ~/.conky/Memory.png -p 32,179 -s 45x45}${image ~/.conky/wlan100.png -p 32,282 -s 45x45}
